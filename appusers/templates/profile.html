@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+{{block.super}}
+{% block title %}
+<title>Login Page</title>
+{% endblock%}
+<link rel="stylesheet" href="{% static 'css/style.css'%}">
+{% endblock %}
+
+
+
+{% block navbar %}
+{{block.super}}
+{% endblock%}
+
+
+{% block main %}
+<div class="container profile mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <h1 class="text-center text-dark">Welcome, {{cur_user.first_name}} {{cur_user.last_name}} </h1>
+            <h3>Your Profile:</h3>
+            <ul>
+                <li>Username: {{cur_user.username}}</li>
+                <li>First Name: {{cur_user.first_name}}</li>
+                <li>Last Name: {{cur_user.last_name}}</li>
+                <li>Email: {{cur_user.email}}</li>
+            </ul>
+            <a href="{% url 'user_edit' cur_user.id %}" class="btn btn-outline-info">Update Profile</a>
+            <a href="{% url 'userpass_edit'%}" class="btn btn-danger text-decoration-none">Reset Password</a>
+        </div>
+        <div class="col-md-8">
+            {% if carts|length > 0%}
+            <h3 class="text-center">Your Carts : {{ carts|length }}</h3>
+            {% endif %}
+            <div class="row">
+                {% for cart in carts %}
+                <div class="col-md-4">
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <img class="card-img-top" src="{{cart.image}}" alt="Card image cap" height="150px">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{cart.title}}</h5>
+                            
+                            <p class="card-text">{{cart.description | truncatewords:10}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <h5 class="card-subtitle">Price: ${{cart.price}}</h5>
+                            <h5 class="card-subtitle">Brand: {{cart.brand}}</h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="container">
+    {{ block.super }}
+</div>
+{% endblock %}

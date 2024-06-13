@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+{{block.super}}
+{% block title %}
+<title>Home Page</title>
+<link rel="stylesheet" href="{% static 'css/style.css'%}">
+{% endblock%}
+{% endblock %}
+
+
+
+{% block navbar %}
+{{block.super}}
+{% endblock%}
+
+
+{% block main %}
+<div class="container">
+    <div class="car-showup">
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    Welcome to AutoHub, your premier online car store. At AutoHub, we offer a vast selection of new and pre-owned vehicles from top manufacturers, ensuring you find the perfect car to fit your needs and budget. Our user-friendly website allows you to browse our inventory, compare models, and explore detailed specifications and high-quality images. With transparent pricing, easy financing options, and exceptional customer service, AutoHub makes your car buying experience smooth and enjoyable. Visit us today and drive away in your dream car!
+                </p>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'car.jpg' %}" alt="car-image" width="100%" height="500">
+            </div>
+        </div>
+    </div>
+    <div class="car-brands">
+        
+        <a href="{% url 'homepage' %}#carlist" class="btn btn-{% if search == 'all' %}info{%else%}outline-info{% endif %}">All</a>
+        {% for brand in brands %}
+        <a href="{% url 'brand_search' brand.id %}#carlist" class="btn btn-{% if search == brand.brand_name %}info{%else%}outline-info{% endif %}">{{brand.brand_name}}</a>
+        {% endfor %}
+    </div>
+    <div class="car-list" id="carlist">
+        <h4>Total Car Found: {{cars | length}}</h4>
+        <div class="row">
+            {% for car in cars %}
+            <div class="col-md-3">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <img src="{{car.image.url}}" class="card-img-top" alt="{{car.title}}" height="200">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title ms-3">{{car.name}}</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Price: {{car.price}}</li>
+                            <li class="list-group-item">Brand: {{car.brand.brand_name}}</li>
+                            <li class="list-group-item">{{car.title}}</li>
+                            <li class="list-group-item">Quantity: {{car.quantity}}</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                        <a href="{% url 'car_details' car.id %}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<div class="container">
+    {{ block.super }}
+</div>
+{% endblock %}
